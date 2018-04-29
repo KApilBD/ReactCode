@@ -1,0 +1,103 @@
+function BuyButton(){
+  return(
+    <div>
+      <td>
+        <button type="button">Buy Now</button>
+      </td>
+    </div>
+  )
+}
+
+function TableHeader(){
+  return(
+    <div>
+      <tr>
+        <th>Year</th>
+        <th>Model</th>
+        <th>Price</th>
+        <th>Buy</th>
+      </tr>
+    </div>
+  )
+}
+
+function TableData(){
+  return(
+    <div>
+      <tr>
+        <th>Year</th>
+        <td>Model</td>
+        <td>Price</td>
+        <BuyButton/>
+      </tr>
+    </div>
+  )
+}
+
+function TransportationTable(props) {
+  return(
+    <div>
+      <h2>{props.title}</h2>
+      <table>
+        <TableHeader/>
+      </table>
+    </div>
+  )
+}
+
+function ListItem(props){
+  return(
+    <option value={props.listItem}>{props.listItem}</option>
+  )
+}
+
+function SelectType(props){
+  return(
+    <div>
+        <p>{props.title}</p>
+        <select name="TransportType">
+          <ListItem listItem= {props.list[0]}/>
+          <ListItem listItem= {props.list[1]}/>
+          <ListItem listItem= {props.list[2]}/>
+          <ListItem listItem= {props.list[3]}/>
+        </select>
+    </div>
+  )
+}
+
+function ChooseOption(props){
+  return(
+    <div>
+      <h2>{props.title}</h2>
+      <span>New Only <input type ="checkbox" name="newOnly" value="newVehicle"/></span>
+    </div>
+  )
+}
+
+function TransportationTitle(props){
+  return(
+    <div>
+        <h2>{props.title}</h2>
+        <p>{props.tagline}</p>
+    </div>
+  )
+}
+
+
+function ReactTransportation(props){
+  return(
+    <div>
+        <TransportationTitle title="Welcome to React Transportation" tagline="The best place to buy vehicles online"/>
+        <ChooseOption title="Choose Options" />
+        <SelectType title="Select Type" list={['All','Cars','Trucks','Convertibles']}/>
+        <TransportationTable title="Cars"/>
+        <TransportationTable title="Trucks"/>
+        <TransportationTable title="Convertibles"/>
+    </div>
+  )
+}
+
+ReactDOM.render(
+    <ReactTransportation/>,
+    document.getElementById("root")
+)

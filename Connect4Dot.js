@@ -23,7 +23,7 @@ function Grid(props){
     backgroundColor:"#b3b8bd"
   }
   return(
-    <div style={style} OnClick={()=> props.handleClick(props.row,props.col)}>
+    <div style={style} onClick={()=> props.handleClick(props.row,props.col)}>
       <Circle grid={props.grid}/>
     </div>
   )

@@ -1,11 +1,17 @@
 function AnswerButton(props){
    var style={
      width:"100%",
-     height:50
-
+     height:50,
    }
+    //console.log(props)
   return(
-    <button style={style} >Answer</button>
+      <div>
+          {
+        props.ans.map((value,index)=>{return <button style={style} key={index} onClick={ ()=>props.clickHandle(index)}>{value}</button>
+
+       })
+          }
+      </div>
   )
 }
 
@@ -14,13 +20,11 @@ function QuestionPanel(props){
              width:"50%",
              float:"left"
             }
+ // console.log(props.ans[0])
   return(
     <div style={style}>
-      <h2 >{this.props.questions}</h2>
-      <AnswerButton/><br></br>
-      <AnswerButton/><br></br>
-      <AnswerButton/><br></br>
-      <AnswerButton/>
+      <h2 >{props.que}</h2>
+      <AnswerButton ans={props.ans} clickHandle={props.clickHandle}/><br></br>
     </div>
   )
 }
@@ -34,29 +38,65 @@ function ResultPanel(props){
             }
     return(
     <div style={style}>
-      <h3 >Correct: </h3>
-      <h3 >Incorrect:</h3>
+      <h3 >Correct:{props.correct} </h3>
+      <h3 >Incorrect:{props.incorrect}</h3>
     </div>
   )
 }
 
 class LayoutBoard extends React.Component{
   constructor(props){
-    super(props)
-    this.state={que:props.appData.question};
+    super(props);
+    this.state={
+      counter:0,
+      correct:0,
+      finish:false,
+      question:props.appData,}
+    this.clickHandle=this.clickHandle.bind(this)
+    //console.log(props.appData[0].options)
+  }
+  clickHandle(index){
+    //console.log("index"+ index)
+    var nextQuestion={
+      counter:this.state.counter+1
+    }
+    //console.log(this.state.question[this.state.counter].answer)
+    if(index == this.state.question[this.state.counter].answer){
+      nextQuestion.correct=this.state.correct+1
+    }
+
+
+    //console.log(this.state.counter+"  "+this.state.question.length+" "+this.state.finish)
+    if(!(this.state.counter < this.state.question.length-1)){
+      nextQuestion.finish=true
+    }
+    this.setState(nextQuestion)
   }
 
   render(){
-    return(
+
+          return(
+
       <div >
-        <QuestionPanel questions={this.state.que[0].question}/>
-        <ResultPanel/>
+        {(!this.state.finish)?
+          <div>
+            <QuestionPanel que={this.state.question[this.state.counter].question} ans={this.state.question[this.state.counter].options} clickHandle={this.clickHandle}/>
+            <ResultPanel correct={this.state.correct} incorrect={this.state.counter-this.state.correct}/>
+          </div>
+          :
+          <div>
+            <ResultPanel correct={this.state.correct} incorrect={this.state.counter-this.state.correct}/>
+          </div>
+        }
+
       </div>
     )
+
   }
 }
 
-let appData=[{
+var appData=[
+  {
   question:"Which can change the state of the component?",
   answer: 1,
   options:["forceUpdate","setState","updateState","None of the mentioned"]
@@ -99,7 +139,8 @@ let appData=[{
   question:"Which CSS property controls the text size?",
   answer: 1,
   options:["text-size", "font-size", "font-style"]
-}]
+}
+]
 
 ReactDOM.render(
   <LayoutBoard appData={appData}/>,
